@@ -6,14 +6,25 @@ import { disconnect } from "process"
 const prisma =  new PrismaClient()
 
 
-// Retrieve all (user) data 
 async function main(){
-    const users = await prisma.user.findMany()
-    console.log(users)
+    const user = await prisma.user.create({
+        data: {
+            name: 'Bob',
+            email: 'bob@prisma.io',
+            posts:{
+                create:{
+                    title: 'Hello world'
+                }
+            }
+        }
+    })
+ 
+    console.log(user)
 }
 
+
 main()
-.then(async ()=>{
+.then(async () =>{
     await prisma.$disconnect()
 })
 .catch(async e =>{
@@ -21,9 +32,5 @@ main()
     await prisma.$disconnect()
     process.exit(1)
 })
-
-
-
-
 
 
